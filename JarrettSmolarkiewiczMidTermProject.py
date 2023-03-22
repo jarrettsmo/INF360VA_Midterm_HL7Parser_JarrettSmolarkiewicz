@@ -426,8 +426,7 @@ while option_Menu != 0:
         # Entering "0" breaks out of the while loop, prints the main menu options, then prompts the user to select an option from the main menu.
         while option_Lab_Result != 0:
             if option_Lab_Result == 1:
-                
-
+                print("\n" + "1" + "\n")
                 #print("\n" + "Entire Observation/Result Segment (OBX) - All Occurences: " + "\n" + str(segment(hl7_split, "OBX")) + "\n")
                 #print("\n" + "Entire Observation/Result Segment (OBX) - All Occurences: " + "\n" +  + "\n")
                 #print("\n" + "Entire Observation/Result Segment (OBX) - All Occurences: " + "\n" + re.findall(str(segment(hl7_split, "OBX")), str(hl7_split)) + "\n")
