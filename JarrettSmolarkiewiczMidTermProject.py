@@ -2,6 +2,7 @@
 INF360 VA - Programming with Python
 Jarrett Smolarkiewicz
 MidTerm Project
+GitHub Link: https://github.com/jarrettsmo/INF360VA_Midterm_HL7Parser_JarrettSmolarkiewicz
 
 MID-TERM GRADING RUBRIC:
 ---------------------------------------------------------
