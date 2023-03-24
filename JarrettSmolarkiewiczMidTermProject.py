@@ -79,19 +79,21 @@ def menu():
 # Choosing Option "1" from the Main Menu will display the entire HL7 Message, then display the Main Menu again and prompt the user to make another selection.
 
 # MAIN MENU OPTION 2: Message Header
-# The "menu_Message_Header()" function:
-#     1. Creates a new list assigned to the variable "message_header_menu" containing each menu option as an item in the list.
-#     2. Prints the entire "message_header_menu" list, with each menu option on a new line.
-def menu_Message_Header():
-    message_header_menu = [
-        "[1] View Entire Message Header Segment",
-        "[2] Sending Facility",
-        "[3] Receiving Facility",
-        "[4] Message Type Information",
-        "[5] HL7 Message Version",
+# The "message_header()" function:
+#     1. Creates a new list assigned to the variable "message_header_info" containing each menu option as an item in the list.
+#     2. Prints the entire "message_header_info" list, with each menu option on a new line.
+def message_header():
+    message_header_info = [
+        "\n" + "Entire Message Header Segment (MSH): " + "\n" + str(segment(hl7_split, "MSH")) + "\n" +
+        "\n" + "Sending Facility: " + str(component(hl7_split, "MSH", 4, 1)) + "\n" +
+        "\n" + "Receiving Facility: " + str(component(hl7_split, "MSH", 6, 1)) + "\n" +
+        "\n" + "Message Type Information: " + (str(component(hl7_split, "MSH", 9, 3)) + 
+            " (Message Structure)").rjust(15) + "\n" + (str(component(hl7_split, "MSH", 9, 1)) + 
+            " (Message Code)").rjust(48) + "\n" + (str(component(hl7_split, "MSH", 9, 2)) + " (Trigger Event)").rjust(49) + "\n" +
+        "\n" + "Message Version: " + "HL7 v" + str(field(hl7_split, "MSH", 12)) + "\n",
         "[0] Back to Main Menu"]
-    print("MESSAGE HEADER MENU")
-    print(*message_header_menu, sep="\n")
+    print("MESSAGE HEADER INFORMATION")
+    print(*message_header_info, sep="\n")
 
 # MAIN MENU OPTION 3: Patient Identification
 # The "menu_Patient_Identification()" function:
@@ -285,7 +287,7 @@ while option_Menu != 0:
     elif option_Menu == 2:
         # DISPLAY MESSAGE HEADER MENU
         print() # Added for one line of space between menus...
-        menu_Message_Header()
+        message_header()
         option_Message_Header = int(input("Enter a number for the Message Header information you would like to view: "))
 
         # Entering "0" breaks out of the while loop, prints the main menu options, then prompts the user to select an option from the main menu.
@@ -304,7 +306,7 @@ while option_Menu != 0:
                 print("\n" + "Please enter a valid option.")
 
             # DISPLAY MESSAGE HEADER MENU AFTER RESULT OF LAST MENU SELECTION
-            menu_Message_Header()
+            message_header()
             option_Message_Header = int(input("Enter a number for the corresponding Message Header information: "))
         else:
             # DISPLAY MAIN MENU AFTER OPTION "0" SELECTED IN PREVIOUS MENU TO GO BACK
