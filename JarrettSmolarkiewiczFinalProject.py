@@ -60,6 +60,35 @@ SPM|1|04295406G0k6G&QUEST&2.16.840.1.113883.3.165.5&ISO^LV130458S6G0k6G&QUEST&2.
 # This part splits the entire HL7 v2.5.1 message assigned to the variable "hl7" into segments that are separated by the "\n" character. 
 hl7_split = hl7.split("\n")
 
+"""
+The "___()" function:
+    1. Takes ___ argument, which is the result of the "___" function.
+    2. Creates a new ___ assigned to the variable "___".
+    3. Iterates through the new ___ using a "for" loop, checking for the "___" variable.
+    4. Defines the "___" variable as the index of the items in the new ___, and assigns this to the variable "___"
+    5. Returns the entire new ___ as a ___ split up into each field of the segment of the original HL7 v2.5.1 message.
+"""
+"""
+def validate_input(menu, menu_prompt):
+    print(*menu, sep="\n")
+    menu_selection = int(input(menu_prompt))
+    #while 0 > menu_selection < (len(menu()) - 1):
+    while 0 <= menu_selection <= (len(menu()) - 1):
+    #while True:
+    #try:
+    #    menu_selection = int(input(menu_prompt))
+    #except ValueError:
+        print("You must enter a number that corresponds with the menu option you'd like to select." + "\n" + "Please enter a valid menu number: ")
+        #continue
+    else:
+        return menu[menu_selection]
+        
+        #break
+    #else:
+        #print("else in first while loop")
+"""
+
+
 # The "menu()" function:
 #     1. Creates a new list assigned to the variable "main_menu" containing each menu option as an item in the list.
 #     2. Prints the entire "main_menu" list, with each menu option on a new line.
@@ -154,7 +183,7 @@ FUNCTION TO RETURN ALL DATA WITHIN SPECIFIED HL7 SEGMENT(S)
 The "segment(hl7_split, header)" function:
     1. Takes two arguments:
             - "hl7_split" is the original HL7 Message, split into segments, using the "\n" character as a delimiter.
-            - "header" is a three character string that corresponds to the three character header of the segment(s) being used from the HL7 message.
+            - "header" is a three character string that corresponds to the three character header of the segment(s) being used from the HL7 message .
     2. Creates a new dictionary and assigns it to the variable "newdict".
     3. Iterates through the HL7 Message segment(s) identified by the "hl7_split" variable using a "for" loop, checking for the "segment" variable.
     4. Assigns the "key" for "newdict" to the first three characters of the selected HL7 message segment(s), which is the segment header.
@@ -186,7 +215,7 @@ The "field(hl7_split, header, field)" function:
     1. Takes three arguments:
             - "hl7_split" is the original HL7 Message, split into segments, using the "\n" character as a delimiter.
             - "header" is a three character string that corresponds to the three character header of the segment(s) being used from the HL7 message .
-            - "field" is a list of items within the segment(s) from the original HL7 Message, split into fields, using the "|" character as a delimiter.
+            - "field" is a list of items within the segment(s) from the original HL7 Message, split into fields, using the "^" character as a delimiter.
     2. Uses a conditional "if" statement to ensure that if the "MSH" or "Message Header" segment is selected using the function,
        the number passed to the "field" argument reflects the actual number convention for HL7 messages.
     3. Creates a new dictionary and assigns it to the variable "newdict".
@@ -220,12 +249,11 @@ def field(hl7_split, header, field):
     return "".join(newdict[header][0][field])
 
 """
-The "component(hl7_split, header, field, component)" function:
-    1. Takes four arguments:
+The "field(hl7_split, header, field)" function:
+    1. Takes three arguments:
             - "hl7_split" is the original HL7 Message, split into segments, using the "\n" character as a delimiter.
             - "header" is a three character string that corresponds to the three character header of the segment(s) being used from the HL7 message .
-            - "field" is a list of items within the segment(s) from the original HL7 Message, split into fields, using the "|" character as a delimiter.
-            - "component" is a list of items within the field(s) from the original HL7 Message, split into components, using the "^" character as a delimiter.
+            - "field" is a list of items within the segment(s) from the original HL7 Message, split into fields, using the "^" character as a delimiter.
     2. Uses a conditional "if" statement to ensure that if the "MSH" or "Message Header" segment is selected using the function,
        the number passed to the "field" argument reflects the actual number convention for HL7 messages.
     3. Creates a new dictionary and assigns it to the variable "newdict".
@@ -236,9 +264,9 @@ The "component(hl7_split, header, field, component)" function:
        are included in a new list called "newdict[key]", by checking if they are in the list as the function iterates through the HL7 message.
        This part of the function also further splits the segments by "|" and "^" delimiters whether one or multiple segments are appended to the newly created list.
     8. Returns only the pieces of the new list (newdict[key]), based on the arguments passed into the function.
-    9. This function's arguments are designed to drilldown all the way to the "component" level when returning the result.
+    9. This function's arguments are designed to drilldown all the way to the "field_separator" level when returning the result.
 """
-def component(hl7_split, header, field, component):
+def field_separator(hl7_split, header, field, field_separator):
     if header == "MSH":
         field = field - 2
     else:
@@ -255,9 +283,11 @@ def component(hl7_split, header, field, component):
         else:
             newdict[key].append([field.split("^") for field in value.split("|")][1:])
 
-    return newdict[header][0][field][component - 1]
+    return newdict[header][0][field][field_separator - 1]
 
-################################### Beginning of the HL7 Application... ###################################
+"""
+Beginning of HL7 Application...
+"""
 try:
     # DISPLAY MAIN MENU
     menu()
@@ -270,8 +300,9 @@ except:
     menu()
     option_Menu = int(input("Enter a number for the message section you would like to view: "))
 
-
-##### Main Menu of the HL7 Application... #####
+"""
+Main Menu of HL7 Application...
+"""
 # Entering "0" breaks out of the while loop, prints: "You have exited the HL7 Program." and then exits the program.
 while option_Menu != 0: 
     if option_Menu == 1:
@@ -293,11 +324,11 @@ while option_Menu != 0:
             if option_Message_Header == 1:
                 print("\n" + "Entire Message Header Segment (MSH): " + "\n" + str(segment(hl7_split, "MSH")) + "\n")
             elif option_Message_Header == 2:
-                print("\n" + "Sending Facility: " + str(component(hl7_split, "MSH", 4, 1)) + "\n")
+                print("\n" + "Sending Facility: " + str(field_separator(hl7_split, "MSH", 4, 1)) + "\n")
             elif option_Message_Header == 3:
-                print("\n" + "Receiving Facility: " + str(component(hl7_split, "MSH", 6, 1)) + "\n")
+                print("\n" + "Receiving Facility: " + str(field_separator(hl7_split, "MSH", 6, 1)) + "\n")
             elif option_Message_Header == 4:
-                print("\n" + "Message Type Information: " + (str(component(hl7_split, "MSH", 9, 3)) + " (Message Structure)").rjust(15) + "\n" + (str(component(hl7_split, "MSH", 9, 1)) + " (Message Code)").rjust(48) + "\n" + (str(component(hl7_split, "MSH", 9, 2)) + " (Trigger Event)").rjust(49) + "\n")
+                print("\n" + "Message Type Information: " + (str(field_separator(hl7_split, "MSH", 9, 3)) + " (Message Structure)").rjust(15) + "\n" + (str(field_separator(hl7_split, "MSH", 9, 1)) + " (Message Code)").rjust(48) + "\n" + (str(field_separator(hl7_split, "MSH", 9, 2)) + " (Trigger Event)").rjust(49) + "\n")
             elif option_Message_Header == 5:
                 print("\n" + "Message Version: " + "HL7 v" + str(field(hl7_split, "MSH", 12)) + "\n")
             else:
@@ -446,3 +477,131 @@ else:
 
 # DISPLAY MESSAGE TO NOTIFY USER THEY HAVE EXITED THE HL7 PARSER AFTER OPTION "0" SELECTED IN MAIN MENU 
 print("You have exited the HL7 Program.")
+
+"""
+The "hl7_segments(hl7_split)" function:
+    1. Takes one argument, which is the variable "hl7_split".
+    2. Creates a new dictionary assigned to the variable "hl7_dictionary".
+    3. Iterates through the new dictionary using a "for" loop, checking for the "segment" variable.
+    4. Defines the "segment" variable as the index of the items in the new dictionary, and assigns this to the variable "segment_split"
+    5. Returns the entire new dictionary as a list split up into each segment of the original HL7 v2.5.1 message.
+"""
+"""
+def hl7_segments(hl7_split):
+    hl7_dictionary = dict(hl7 = hl7_split)
+    for segment in hl7_dictionary:
+        segment_split = hl7_dictionary[segment]
+        
+    #print(segment_split)
+    #return segment_split
+    print(hl7_dictionary)
+
+# Assigns a variable "x" to call the hl7_segments(hl7_split) function.
+hl7_segments(hl7_split)
+"""
+"""
+def segment(hl7_split):
+    newdict = {}
+    for line in hl7_split:
+        if line[0:3] not in newdict:
+            newdict[line[0:3]] = []
+            newdict[line[0:3]].append(line[3:])
+        else:
+            newdict[line[0:3]].append(line[3:])
+            
+    #pprint.pprint(newdict)
+    pprint.pprint(newdict)
+
+segment(hl7_split)
+
+def segment(hl7_split):
+    newdict = {}
+    for segment in hl7_split:
+        key = segment[0:3]
+        value = segment[3:]
+
+        if key not in newdict:
+            newdict[key] = []
+            newdict[key].append([field.split("^") for field in value.split("|")][1:])
+            
+        else:
+            newdict[key].append([field.split("^") for field in value.split("|")][1:])
+
+    #print(newdict["MSH"][0][2][0])
+    return newdict["MSH"][0][2][0]
+"""
+
+"""
+The "hl7_fields(hl7_segments(hl7_split))" function:
+    1. Takes one argument, which is the result of the "hl7_segments(hl7_split)" function.
+    2. Creates a new list assigned to the variable "segment_list".
+    3. Iterates through the new list using a "for" loop, checking for the "field" variable.
+    4. Defines the "field" variable as the index of the items in the new list, and assigns this to the variable "field_split"
+    5. Returns the entire new list as a list split up into each field of the segment of the original HL7 v2.5.1 message.
+"""
+"""
+def hl7_fields(x):
+    x_split = x.split("|")
+    segment_list = list(x_split)
+    for field in segment_list:
+        field_split = segment_list[field]
+        
+    print(field_split)
+    #return field_split
+
+# Call the hl7_fields(hl7_segments(hl7_split)) function.
+hl7_fields(x)
+"""
+"""
+segment_split = hl7.split("\n")
+
+hl7_dictionary = dict(hl7 = hl7_split)
+for segment in hl7_dictionary:
+    segment_split = hl7_dictionary[segment]
+# convert to "return" instead of "print"
+print(segment_split)
+
+
+msh = hl7_split[0]
+#pid = hl7_split[1]
+
+msh_split = msh.split("|")
+field = msh_split[3]
+
+field_split = field.split("^")
+target = field_split[0]
+
+#print(field)
+#print(field_split)
+
+#newdict = dict(hl7 = msh_split)
+#print(newdict)
+
+#newdict = dict(msh = msh_split)
+#print(newdict)
+
+#newdict = dict(field = field_split)
+#print(newdict)
+
+#print(target)
+#print(*msh_split, sep="\n")
+"""
+"""
+#, sep="\n" + "\n"
+for x in hl7_split:
+    hl7_split[x] = segment
+    
+segment_split = segment.split("|")
+
+#print(*hl7_split, sep="\n")
+#print(*pid.split("|"), sep="\n")
+#print(*pid.split("|"), sep="\n")
+
+# print(testing.index("MSH"))
+# print(testing.index("PID"))
+# print(testing.index("SPM"))
+
+# for y in testing:
+#    y = testing.index("\n")
+#    print(y)
+"""
