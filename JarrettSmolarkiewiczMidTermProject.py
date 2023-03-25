@@ -113,39 +113,39 @@ def patient_identification():
 # The "menu_Lab_Order()" function:
 #     1. Creates a new list assigned to the variable "lab_order_menu" containing each menu option as an item in the list.
 #     2. Prints the entire "lab_order_menu" list, with each menu option on a new line.
-def menu_Lab_Order():
-    lab_order_menu = [
-        "[1] View All Lab Order Segments",
-        "[2] Ordering Facility Information",
-        "[3] Ordering Provider Information",
-        "[4] Lab Order Information",
-        "[0] Back to Main Menu"]
-    print("LAB ORDER INFORMATION MENU")
-    print(*lab_order_menu, sep="\n")
+# def menu_Lab_Order():
+#     lab_order_menu = [
+#         "[1] View All Lab Order Segments",
+#         "[2] Ordering Facility Information",
+#         "[3] Ordering Provider Information",
+#         "[4] Lab Order Information",
+#         "[0] Back to Main Menu"]
+#     print("LAB ORDER INFORMATION MENU")
+#     print(*lab_order_menu, sep="\n")
 
 # MAIN MENU OPTION 5: Lab Result Information
 # The "menu_Lab_Result()" function:
 #     1. Creates a new list assigned to the variable "lab_result_menu" containing each menu option as an item in the list.
 #     2. Prints the entire "lab_result_menu" list, with each menu option on a new line.
-def menu_Lab_Result():
-    lab_result_menu = [
-        "[1] View All Lab Result Segments",
-        "[2] Lab Results",
-        "[0] Back to Main Menu"]
-    print("LAB RESULT INFORMATION MENU")
-    print(*lab_result_menu, sep="\n")
+# def menu_Lab_Result():
+#     lab_result_menu = [
+#         "[1] View All Lab Result Segments",
+#         "[2] Lab Results",
+#         "[0] Back to Main Menu"]
+#     print("LAB RESULT INFORMATION MENU")
+#     print(*lab_result_menu, sep="\n")
 
 # MAIN MENU OPTION 6: Specimen Information
 # The "menu_Specimen()" function:
 #     1. Creates a new list assigned to the variable "specimen_menu" containing each menu option as an item in the list.
 #     2. Prints the entire "specimen_menu" list, with each menu option on a new line.
-def menu_Specimen():
-    specimen_menu = [
-        "[1] View Entire Specimen Segment",
-        "[2] Specimen Information",
-        "[0] Back to Main Menu"]
-    print("SPECIMEN INFORMATION MENU")
-    print(*specimen_menu, sep="\n")
+# def menu_Specimen():
+#     specimen_menu = [
+#         "[1] View Entire Specimen Segment",
+#         "[2] Specimen Information",
+#         "[0] Back to Main Menu"]
+#     print("SPECIMEN INFORMATION MENU")
+#     print(*specimen_menu, sep="\n")
 
 # MAIN MENU OPTION 0: Exit (There is no pre-defined function for this option. The code is within a "while" statement later in the program.)
 # Choosing Option "0" from the Main Menu will exit the HL7 Parser Program.
@@ -258,78 +258,115 @@ def component(hl7_split, header, field, component):
 
     return newdict[header][0][field][component - 1]
 
+# While Loop functions 
+keep_going = True
+stop_going = False
+
 # FUNCTION TO RETURN TO MAIN MENU (Sanitizes User Input)
 #option_Message_Header = int(input("Enter '0' to return to the Main Menu: "))
-def back_to_main_menu(option_Menu):
-        if option_Menu.isnumeric() and int(option_Menu) == 0:
-            # DISPLAY MAIN MENU
-            return int(option_Menu)
-        else:
-            print("Invalid input! " + option_Menu)
+# def back_to_main_menu(option_Menu):
+#         if option_Menu.isnumeric() and int(option_Menu) == 0:
+#             # DISPLAY MAIN MENU
+#             return int(option_Menu)
+#         else:
+#             print("Invalid input! " + option_Menu)
 
 ################################### Beginning of the HL7 Application... ###################################
 
 # DISPLAY MAIN MENU
 menu()
 # SANITIZE USER INPUT (Ensures user enters ONLY numbers 0 - 6 as menu items, or else keeps looping through until they do)
-while True:
-    option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-    try:
-        option_Menu = 0 <= int(option_Menu) <= 6
-    
-        # Entering "0" breaks out of the while loop, prints: "You have exited the HL7 Program." and then exits the program.
-        while option_Menu != 0: 
-            
-            # DISPLAY ENTIRE HL7 MESSAGE
-            if option_Menu == 1:
-                print("\n" + "Entire HL7 Message: " + "\n" + hl7)
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-            
-            # DISPLAY RAW MESSAGE HEADER SEGMENT (MSH) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
-            elif option_Menu == 2:
-                message_header()
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-
-            # DISPLAY RAW PATIENT IDENTIFICATION SEGMENT (PID) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
-            elif option_Menu == 3:
-                patient_identification()
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-
-            elif option_Menu == 4:
-                # DISPLAY LAB ORDER INFORMATION
-                print("Lab Order")
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-
-            elif option_Menu == 5:
-                # DISPLAY LAB RESULT INFORMATION
-                print("Lab Result")
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-
-            elif option_Menu == 6:
-                # DISPLAY SPECIMEN INFORMATION
-                print("Specimen")
-                menu()
-                option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
-                
-            else:
-                # DISPLAY MAIN MENU AFTER INVALID NUMBER ENTERED
-                print("\n" + "Invalid option! You must enter a number between 1 and 6..." + "\n")
-                menu()
-                option_Menu = int(input("Enter a number for the message section you would like to view: "))    
-        else:
-            break
-    except:
-        if option_Menu != 0:
+try:
+    while keep_going:
+        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+        try:
+            if (0 <= option_Menu <= 6):
+        
+                # Entering "0" breaks out of the while loop, prints: "You have exited the HL7 Program." and then exits the program.
+                while option_Menu != 0: 
+                    
+                    # DISPLAY ENTIRE HL7 MESSAGE
+                    if option_Menu == 1:
+                        print("\n" + "Entire HL7 Message: " + "\n" + hl7)
+                        menu()
+                        while True:
+                            option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                            try:
+                                if (0 <= option_Menu <= 6):
+                                    break
+                            except:
+                                menu()
+                                print('Please use numeric digits between 0 and 6...')
+                                option_Menu = int(input("Enter a number for the message section you would like to view: "))
+                                continue
+                                
+                    # DISPLAY RAW MESSAGE HEADER SEGMENT (MSH) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
+                    elif option_Menu == 2:
+                        print("message header")
+                        #message_header()
+                        menu()
+                        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                        continue
+                    # DISPLAY RAW PATIENT IDENTIFICATION SEGMENT (PID) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
+                    elif option_Menu == 3:
+                        print("patient identification")
+                        #patient_identification()
+                        menu()
+                        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                        continue
+                    elif option_Menu == 4:
+                        # DISPLAY LAB ORDER INFORMATION
+                        print("Lab Order")
+                        menu()
+                        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                        continue
+                    elif option_Menu == 5:
+                        # DISPLAY LAB RESULT INFORMATION
+                        print("Lab Result")
+                        menu()
+                        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                        continue
+                    elif option_Menu == 6:
+                        # DISPLAY SPECIMEN INFORMATION
+                        print("Specimen")
+                        menu()
+                        option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+                        continue             
+                    else:
+                        # DISPLAY MAIN MENU AFTER INVALID NUMBER ENTERED
+                        print("\n" + "Invalid option! You must enter a number between 1 and 6..." + "\n")
+                        menu()
+                        option_Menu = int(input("Enter a number for the message section you would like to view: "))
+                        continue   
+                else:
+                    break
+            #else:
+            #    break
+        except:
+            #if option_Menu != 0:
             menu()
             print('Please use numeric digits between 0 and 6...')
+            option_Menu = int(input("Enter a number for the message section you would like to view: "))
             continue
-        else:
-            break
+            #else:
+            #   break
+    else:
+        keep_going = stop_going
+    # except:
+    #         #if option_Menu != 0:
+    #         menu()
+    #         print('You REALLY need to use numeric digits between 0 and 6...')
+    #         option_Menu = int(input("Enter a number for the message section you would like to view: "))
+    #         continue
+    #         #else:
+    #         #   break
+except:
+        #if option_Menu != 0:
+        menu()
+        print('You MUST need to use numeric digits between 0 and 6! Another invalid entry will exit the program.')
+        option_Menu = int(input("Enter a number for the message section you would like to view: "))
+        #else:
+        #   break
 
 # DISPLAY MESSAGE TO NOTIFY USER THEY HAVE EXITED THE HL7 PARSER AFTER OPTION "0" SELECTED IN MAIN MENU 
 print("You have exited the HL7 Program.")
