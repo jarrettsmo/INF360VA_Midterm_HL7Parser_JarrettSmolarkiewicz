@@ -75,7 +75,7 @@ def menu():
     print("HL7 PARSER MAIN MENU")
     print(*main_menu, sep="\n")
 
-# MAIN MENU OPTION 1: View Entire HL7 Message (There is no pre-defined function for this option. The code is within a "while" statement later in the program.)
+# MAIN MENU OPTION 1: View Entire HL7 Message (There is no pre-defined function for this option. The code is within the "while" statement later in the program.)
 # Choosing Option "1" from the Main Menu will display the entire HL7 Message, then display the Main Menu again and prompt the user to make another selection.
 
 # MAIN MENU OPTION 2: Message Header
@@ -138,12 +138,12 @@ def lab_order():
 
 # MAIN MENU OPTION 5: Lab Result Information
 # The "lab_results()" function:
-#     1. Creates a new list assigned to the variable "lab_result_info" containing a string of only the necessary extracted information from each occurence of the Observation Result (OBX) segment(s).
+#     1. Creates a new list assigned to the variable "lab_result_info" containing a string of the initial Observation Result (OBX) segment, as well as how many total OBX segments are in the message.
 #     2. Prints the entire "lab_result_info" content as a formatted string that is much easier to read and understand.
 def lab_results():
     lab_result_info = [
-        "\n" + "Sample Lab Result Segment (OBX): " + "\n" + str(segment(hl7_split, "OBX")) + "\n" +
-        "\n" + "Number of Lab Result Segments in Message: " +  str(hl7.count("OBX")) + "\n"]
+        "\n" + "Initial Lab Result Segment (OBX): " + "\n" + str(segment(hl7_split, "OBX")) + "\n" +
+        "\n" + "Total Number of Lab Result Segments in Message: " +  str(hl7.count("OBX")) + "\n"]
     print("LAB RESULT INFORMATION MENU")
     print(*lab_result_info, sep="\n")
 
@@ -300,11 +300,11 @@ while True:
             lab_order()
             continue
         elif int(option_Menu) == 5:
-            # DISPLAY RAW LAB RESULTS (OBX) SEGMENTS FOLLOWED BY NUMBER OF LAB RESULT SEGMENTS IN MESSAGE
+            # DISPLAY INITIAL RAW LAB RESULT (OBX) SEGMENT FOLLOWED BY TOTAL NUMBER OF LAB RESULT SEGMENTS IN MESSAGE
             lab_results()
             continue
         elif int(option_Menu) == 6:
-            # DISPLAY RAW SPECIMEN SEGMENT (SPM) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
+            # DISPLAY RAW SPECIMEN SEGMENT (SPM) FOLLOWED BY NEATLY PRESENTED RELEVANT SPECIMEN INFORMATION
             specimen()
             continue
         elif int(option_Menu) == 0:
