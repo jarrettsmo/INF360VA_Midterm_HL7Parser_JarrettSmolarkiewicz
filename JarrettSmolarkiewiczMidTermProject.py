@@ -115,10 +115,10 @@ def patient_identification():
 #     2. Prints the entire "lab_order_info" content as a formatted string that is much easier to read and understand.
 def lab_order():
     lab_order_info = [
-        "\n" + "View All Lab Order Segments: " + "\n" + 
-        "\n" + "ORC" + "\n" + 
+        "\n" + "All Lab Order Segments: " + "\n" + 
+        "\n" + "(ORC)" +  
         "\n" + str(segment(hl7_split, "ORC")) + "\n" + 
-        "\n" + "OBR" + "\n" + 
+        "\n" + "(OBR)" +  
         "\n" + str(segment(hl7_split, "OBR")) + "\n" + 
         "\n" + "Ordering Facility Information: " + 
         "\n" + str(component(hl7_split, "ORC", 21, 1)).rjust(26) + 
@@ -142,23 +142,26 @@ def lab_order():
 #     2. Prints the entire "lab_result_info" content as a formatted string that is much easier to read and understand.
 def lab_results():
     lab_result_info = [
-        "[1] View All Lab Result Segments",
-        "[2] Lab Results",
-        "[0] Back to Main Menu"]
+        "\n" + "Sample Lab Result Segment (OBX): " + "\n" + str(segment(hl7_split, "OBX")) + "\n" +
+        "\n" + "Number of Lab Result Segments in Message: " +  str(hl7.count("OBX")) + "\n"]
     print("LAB RESULT INFORMATION MENU")
     print(*lab_result_info, sep="\n")
 
 # MAIN MENU OPTION 6: Specimen Information
-# The "menu_Specimen()" function:
-#     1. Creates a new list assigned to the variable "specimen_menu" containing a string of only the necessary extracted information from the Specimen (SPM) segment.
-#     2. Prints the entire "specimen_menu" content as a formatted string that is much easier to read and understand.
-# def menu_Specimen():
-#     specimen_menu = [
-#         "[1] View Entire Specimen Segment",
-#         "[2] Specimen Information",
-#         "[0] Back to Main Menu"]
-#     print("SPECIMEN INFORMATION MENU")
-#     print(*specimen_menu, sep="\n")
+# The "specimen()" function:
+#     1. Creates a new list assigned to the variable "specimen_info" containing a string of only the necessary extracted information from the Specimen (SPM) segment.
+#     2. Prints the entire "specimen_info" content as a formatted string that is much easier to read and understand.
+def specimen():
+    amp = str(component(hl7_split, "SPM", 2, 2)).find("&")
+    specimen_info = [
+        "\n" + "Entire Specimen Segment (SPM): " + "\n" + str(segment(hl7_split, "SPM")) + "\n" +
+        "\n" + "Specimen Information: " +
+        "\n" + "LOINC: ".rjust(9) + str(component(hl7_split, "SPM", 2, 2)[0:amp]).rjust(30) +
+        "\n" + "SNOMED: ".rjust(10) + str(component(hl7_split, "SPM", 4, 1)).rjust(23) +
+        "\n" + "Type: ".rjust(8) + str(component(hl7_split, "SPM", 4, 2)).rjust(41) + 
+        "\n" + "Data/Time Collected: ".rjust(23) + str(field(hl7_split, "SPM", 17)[4:6]).rjust(3) + "-" + str(field(hl7_split, "SPM", 17)[6:8]) + "-" + str(field(hl7_split, "SPM", 17)[0:4]) + " " + str(field(hl7_split, "SPM", 17)[8:10]) + ":" + str(field(hl7_split, "SPM", 17)[10:12]) + " UTC" + str(field(hl7_split, "SPM", 17)[12:]) + "\n"]
+    print("SPECIMEN INFORMATION MENU")
+    print(*specimen_info, sep="\n")
 
 # MAIN MENU OPTION 0: Exit (There is no pre-defined function for this option. The code is within a "while" statement later in the program.)
 # Choosing Option "0" from the Main Menu will exit the HL7 Parser Program.
@@ -273,12 +276,12 @@ def component(hl7_split, header, field, component):
 
 ################################### Beginning of the HL7 Application... ###################################
 
-# SANITIZE USER INPUT (Ensures user enters ONLY numbers 0 - 6 as menu items, or else keeps looping through prompt for menu option until they do)
+# SANITIZE USER INPUT (Ensures user enters ONLY numbers 0 - 6 as menu items, or else keeps looping through prompt for a valid menu option until they do)
 while True:
     try:
         # DISPLAY MAIN MENU
         menu()
-        option_Menu = input("Enter a number for the HL7 message information you would like to view: ")
+        option_Menu = input("Enter a number between 0 - 6 for the HL7 message information you would like to view: ")
                     
         # DISPLAY ENTIRE HL7 MESSAGE
         if int(option_Menu) == 1:
@@ -297,11 +300,11 @@ while True:
             lab_order()
             continue
         elif int(option_Menu) == 5:
-            # DISPLAY LAB RESULT INFORMATION
+            # DISPLAY RAW LAB RESULTS (OBX) SEGMENTS FOLLOWED BY NUMBER OF LAB RESULT SEGMENTS IN MESSAGE
             lab_results()
             continue
         elif int(option_Menu) == 6:
-            # DISPLAY SPECIMEN INFORMATION
+            # DISPLAY RAW SPECIMEN SEGMENT (SPM) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
             specimen()
             continue
         elif int(option_Menu) == 0:
@@ -313,11 +316,6 @@ while True:
             continue
     except:
         continue
-    # else:
-    #     #keep_going = stop_going
-    #     menu()
-    #     print('You MUST need to use numeric digits between 0 and 6!')
-    #     option_Menu = int(input("Enter a number for the message section you would like to view: "))
 
 # DISPLAY MESSAGE TO NOTIFY USER THEY HAVE EXITED THE HL7 PARSER AFTER OPTION "0" SELECTED IN MAIN MENU 
 print("You have exited the HL7 Program.")
