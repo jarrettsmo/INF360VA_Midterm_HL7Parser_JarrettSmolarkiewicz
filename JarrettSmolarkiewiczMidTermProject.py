@@ -80,12 +80,12 @@ def menu():
 
 # MAIN MENU OPTION 2: Message Header
 # The "message_header()" function:
-#     1. Creates a new list assigned to the variable "message_header_info" containing each menu option as an item in the list.
-#     2. Prints the entire "message_header_info" list, with each menu option on a new line.
+#     1. Creates a new list assigned to the variable "message_header_info" containing a string of only the necessary extracted information from the Message Header segment (MSH).
+#     2. Prints the entire "message_header_info" content as a formatted string that is much easier to read and understand.
 def message_header():
     message_header_info = [
         "\n" + "Entire Message Header Segment (MSH): " + "\n" + str(segment(hl7_split, "MSH")) + "\n" +
-        "\n" + "Sending Facility: " + str(component(hl7_split, "MSH", 4, 1)).rjust(4) + 
+        "\n" + "Sending Facility: " + str(component(hl7_split, "MSH", 4, 1).lower().title()).rjust(18) + 
         "\n" + "Receiving Facility: " + str(component(hl7_split, "MSH", 6, 1)) + "\n" +
         "\n" + "Message Type Information: " + (str(component(hl7_split, "MSH", 9, 3)) + 
             " (Message Structure)").rjust(15) + "\n" + (str(component(hl7_split, "MSH", 9, 1)) + 
@@ -96,49 +96,62 @@ def message_header():
 
 # MAIN MENU OPTION 3: Patient Identification
 # The "patient_identification()" function:
-#     1. Creates a new list assigned to the variable "patient_identification_info" containing each menu option as an item in the list.
-#     2. Prints the entire "patient_identification_info" list, with each menu option on a new line.
+#     1. Creates a new list assigned to the variable "patient_identification_info" containing a string of only the necessary extracted information from the Patient Identification segment (PID).
+#     2. Prints the entire "patient_identification_info" content as a formatted string that is much easier to read and understand.
 def patient_identification():
     patient_identification_info = [
         "\n" + "Entire Patient Identification Segment (PID): " + "\n" + str(segment(hl7_split, "PID")) + "\n" + 
-        "\n" + "Patient Name: " + str(component(hl7_split, "PID", 5, 2)) + " " + str(component(hl7_split, "PID", 5, 1)) +
+        "\n" + "Patient Name: " + str(component(hl7_split, "PID", 5, 2)).rjust(10) + " " + str(component(hl7_split, "PID", 5, 1)) +
         "\n" + "Date of Birth: " + str(field(hl7_split, "PID", 7)[4:6]) + "-" + str(field(hl7_split, "PID", 7)[6:]) + "-" + str(field(hl7_split, "PID", 7)[0:4]) +
-        "\n" + "Phone Number: " + "(" + str(component(hl7_split, "PID", 13, 6)) + ") " + str(component(hl7_split, "PID", 13, 7)[0:3]) + "-" + str(component(hl7_split, "PID", 13, 7)[3:]) +
-        "\n" + "Address: " + str(component(hl7_split, "PID", 11, 1)) +
-        "\n" +  str(component(hl7_split, "PID", 11, 3)) + ", " + str(component(hl7_split, "PID", 11, 4)) + " " + str(component(hl7_split, "PID", 11, 5))] 
+        "\n" + "Phone Number: " + "(".rjust(2) + str(component(hl7_split, "PID", 13, 6)) + ") " + str(component(hl7_split, "PID", 13, 7)[0:3]) + "-" + str(component(hl7_split, "PID", 13, 7)[3:]) +
+        "\n" + "Address: " + str(component(hl7_split, "PID", 11, 1)).rjust(26) +
+        "\n" +  str(component(hl7_split, "PID", 11, 3).lower().title()).rjust(21) + ", " + str(component(hl7_split, "PID", 11, 4)) + " " + str(component(hl7_split, "PID", 11, 5)) + "\n"] 
     print("\n" + "PATIENT IDENTIFICATION INFORMATION")
     print(*patient_identification_info, sep="\n")
 
 # MAIN MENU OPTION 4: Lab Order Information
-# The "menu_Lab_Order()" function:
-#     1. Creates a new list assigned to the variable "lab_order_menu" containing each menu option as an item in the list.
-#     2. Prints the entire "lab_order_menu" list, with each menu option on a new line.
-# def menu_Lab_Order():
-#     lab_order_menu = [
-#         "[1] View All Lab Order Segments",
-#         "[2] Ordering Facility Information",
-#         "[3] Ordering Provider Information",
-#         "[4] Lab Order Information",
-#         "[0] Back to Main Menu"]
-#     print("LAB ORDER INFORMATION MENU")
-#     print(*lab_order_menu, sep="\n")
+# The "lab_order()" function:
+#     1. Creates a new list assigned to the variable "lab_order_info" containing a string of only the necessary extracted information from the Common Order (ORC) and Observation Request (OBR) segments.
+#     2. Prints the entire "lab_order_info" content as a formatted string that is much easier to read and understand.
+def lab_order():
+    lab_order_info = [
+        "\n" + "View All Lab Order Segments: " + "\n" + 
+        "\n" + "ORC" + "\n" + 
+        "\n" + str(segment(hl7_split, "ORC")) + "\n" + 
+        "\n" + "OBR" + "\n" + 
+        "\n" + str(segment(hl7_split, "OBR")) + "\n" + 
+        "\n" + "Ordering Facility Information: " + 
+        "\n" + str(component(hl7_split, "ORC", 21, 1)).rjust(26) + 
+        "\n" + "(".rjust(3) + str(component(hl7_split, "ORC", 23, 6)) + ") " + str(component(hl7_split, "ORC", 23, 7)[0:3]) + "-" + str(component(hl7_split, "ORC", 23, 7)[3:]) +
+        "\n" + str(component(hl7_split, "ORC", 22, 1).lower().title()).rjust(15) + "\n" + str(component(hl7_split, "ORC", 22, 3).lower().title()).rjust(9) + ", " + str(component(hl7_split, "ORC", 22, 4)) + " " + str(component(hl7_split, "ORC", 22, 5)) + "\n" +
+        "\n" + "Ordering Provider Information: " + 
+        "\n" + str(component(hl7_split, "ORC", 12, 3)).rjust(7) + " " + str(component(hl7_split, "ORC", 12, 2)) +
+        "\n" + str(component(hl7_split, "ORC", 12, 13)).rjust(5) + ": " + str(component(hl7_split, "ORC", 12, 1)) +
+        "\n" + str(component(hl7_split, "ORC", 24, 1).lower().title()).rjust(15) + "\n" + str(component(hl7_split, "ORC", 24, 3).lower().title()).rjust(9) + ", " + str(component(hl7_split, "ORC", 24, 4)) + " " + str(component(hl7_split, "ORC", 24, 5)) + "\n" +
+        "\n" + "Lab Order Information: " +
+        "\n" + "Performing Lab: ".rjust(18) + str(component(hl7_split, "OBR", 3, 2).lower().title()).rjust(9) + 
+        "\n" + "LOINC: ".rjust(9) + str(component(hl7_split, "OBR", 3, 1)).rjust(35) + 
+        "\n" + "Description of Lab: ".rjust(22) + str(component(hl7_split, "OBR", 4, 5).lower().title()).rjust(19) + 
+        "\n" + "Date/Time of Lab: ".rjust(20) + str(field(hl7_split, "OBR", 7)[4:6]).rjust(4) + "-" + str(field(hl7_split, "OBR", 7)[6:8]) + "-" + str(field(hl7_split, "OBR", 7)[0:4]) + " " + str(field(hl7_split, "OBR", 7)[8:10]) + ":" + str(field(hl7_split, "OBR", 7)[10:12]) + " UTC" + str(field(hl7_split, "OBR", 7)[12:]) + "\n"]
+    print("\n" + "LAB ORDER INFORMATION MENU")
+    print(*lab_order_info, sep="\n")
 
 # MAIN MENU OPTION 5: Lab Result Information
-# The "menu_Lab_Result()" function:
-#     1. Creates a new list assigned to the variable "lab_result_menu" containing each menu option as an item in the list.
-#     2. Prints the entire "lab_result_menu" list, with each menu option on a new line.
-# def menu_Lab_Result():
-#     lab_result_menu = [
-#         "[1] View All Lab Result Segments",
-#         "[2] Lab Results",
-#         "[0] Back to Main Menu"]
-#     print("LAB RESULT INFORMATION MENU")
-#     print(*lab_result_menu, sep="\n")
+# The "lab_results()" function:
+#     1. Creates a new list assigned to the variable "lab_result_info" containing a string of only the necessary extracted information from each occurence of the Observation Result (OBX) segment(s).
+#     2. Prints the entire "lab_result_info" content as a formatted string that is much easier to read and understand.
+def lab_results():
+    lab_result_info = [
+        "[1] View All Lab Result Segments",
+        "[2] Lab Results",
+        "[0] Back to Main Menu"]
+    print("LAB RESULT INFORMATION MENU")
+    print(*lab_result_info, sep="\n")
 
 # MAIN MENU OPTION 6: Specimen Information
 # The "menu_Specimen()" function:
-#     1. Creates a new list assigned to the variable "specimen_menu" containing each menu option as an item in the list.
-#     2. Prints the entire "specimen_menu" list, with each menu option on a new line.
+#     1. Creates a new list assigned to the variable "specimen_menu" containing a string of only the necessary extracted information from the Specimen (SPM) segment.
+#     2. Prints the entire "specimen_menu" content as a formatted string that is much easier to read and understand.
 # def menu_Specimen():
 #     specimen_menu = [
 #         "[1] View Entire Specimen Segment",
@@ -258,19 +271,6 @@ def component(hl7_split, header, field, component):
 
     return newdict[header][0][field][component - 1]
 
-# While Loop functions 
-keep_going = True
-stop_going = False
-
-# FUNCTION TO RETURN TO MAIN MENU (Sanitizes User Input)
-#option_Message_Header = int(input("Enter '0' to return to the Main Menu: "))
-# def back_to_main_menu(option_Menu):
-#         if option_Menu.isnumeric() and int(option_Menu) == 0:
-#             # DISPLAY MAIN MENU
-#             return int(option_Menu)
-#         else:
-#             print("Invalid input! " + option_Menu)
-
 ################################### Beginning of the HL7 Application... ###################################
 
 # SANITIZE USER INPUT (Ensures user enters ONLY numbers 0 - 6 as menu items, or else keeps looping through prompt for menu option until they do)
@@ -290,30 +290,22 @@ while True:
             continue
         # DISPLAY RAW PATIENT IDENTIFICATION SEGMENT (PID) FOLLOWED BY NEATLY PRESENTED RELEVANT INFORMATION
         elif int(option_Menu) == 3:
-            #print("patient identification")
             patient_identification()
             continue
         elif int(option_Menu) == 4:
-            # DISPLAY LAB ORDER INFORMATION
-            print("Lab Order")
-            # menu()
-            # option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+            # DISPLAY RAW COMMON ORDER (ORC) AND OBSERVATION RESULT (OBR) SEGMENTS FOLLOWED BY NEATLY PRESENTED RELEVANT LAB ORDER INFORMATION
+            lab_order()
             continue
         elif int(option_Menu) == 5:
             # DISPLAY LAB RESULT INFORMATION
-            print("Lab Result")
-            # menu()
-            # option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+            lab_results()
             continue
         elif int(option_Menu) == 6:
             # DISPLAY SPECIMEN INFORMATION
-            print("Specimen")
-            # menu()
-            # option_Menu = int(input("Enter a number for the HL7 message information you would like to view: "))
+            specimen()
             continue
         elif int(option_Menu) == 0:
             # DISPLAY MESSAGE TO NOTIFY USER THEY HAVE EXITED THE HL7 PARSER AFTER OPTION "0" SELECTED IN MAIN MENU 
-            #print("You have exited the HL7 Program.")
             break             
         else:
             # DISPLAY MAIN MENU AFTER INVALID NUMBER ENTERED
